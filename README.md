@@ -68,3 +68,5 @@ TODO
 * https://www.richardmudhar.com/blog/2015/12/gps-serial-receiver-for-kenwood-th-d7/
 * https://nmeachecksum.eqth.net/
 * https://www.qsl.net/ta1md/projects/nmeacon.htm
+
+![Visitor Badge](https://visitor-badge.laobi.icu/badge?page_id=sterrando.TH-D7E_NMEA_CONVERTER)
