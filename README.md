@@ -10,8 +10,8 @@ The problem is the TH-D7 has a well known bug, so that any modern GPS won't be d
 
 ## Documentation research
 First, forget about Kenwood documentation: the guy was put on the market when Garmin was still selling portable trekking GPS, PC still had serial ports and the Spice Girls were still on active duty.
-As usual, starting point: Google. I found [this site](https://www.qsl.net/ta1md/projects/nmeacon.htm) where the author speak about the problem and provides a link to another site where there is the explanation of why the bug occurrs. Unfortunately the link is broken.
-On the site there is also a source code for PIC, but since for this project I'll use an Arduino I have lying around, I'll have to write the code myself.
+As usual, starting point: Google. I found [this site](https://www.qsl.net/ta1md/projects/nmeacon.htm) where the author speak about the problem and provides a link to another site where there is the explanation of why the bug occurrs. Unfortunately the link is broken 😢.
+On the site there is also a source code for PIC, but since for this project I'll use an ![Arduino](https://img.shields.io/badge/-Arduino-00979D?style=for-the-badge&logo=Arduino&logoColor=white) I have lying around, I'll have to write the code myself.
 
 ## Reverse Engineering
 On the C source code from TA2AWM i spotted ```printf("$GPRMC,");``` and it turns out that this is the problematic NMEA sentence. To understand what is the root cause I set up a reverse engineering test where I was sending NMEA sentences to the radio using a computer terminal and a USB to RS323 converter until I was not able to get them correctly interpreted.
@@ -33,6 +33,16 @@ Where:
 * \*6A          The checksum data, always begins with "\*"
 
 ### Reverse engineering done with PC and terminal connected to the HT, sending manually GPRMC messages
-This does not work:
-from ```$GPRMC,211040.00,A,4340.05768,N,00702.54714,E,0.028,,010820,,*13```
-to (CRC recalculated) ```$GPRMC,211040,A,4340.057,N,0702.547,E,0.028,,010820,,*06```
+
+This does not work:  
+>from ```$GPRMC,211040.00,A,4340.05768,N,00702.54714,E,0.028,,010820,,*13```  
+>to (CRC recalculated) ```$GPRMC,211040,A,4340.057,N,0702.547,E,0.028,,010820,,*06```  
+
+This works:  
+>from ```$GPRMC,211040.00,A,4340.05768,N,00702.54714,E,0.028,,010820,,*13```  
+>to ```$GPRMC,211040,A,4340.057,N,00702.547,E,00.0,000.0,010820,0.0,E,S*36```  
+
+Rule:  
+>Each of the RMC fields must have a fixed length  
+>```$GPRMC,211040.00,A,4340.05768,N,00702.54714,E,0.028,     ,010820,   ,   *13```  
+>```$GPRMC,211040   ,A,4340.057  ,N,00702.547  ,E,00.0 ,000.0,010820,0.0,E,S*36```
