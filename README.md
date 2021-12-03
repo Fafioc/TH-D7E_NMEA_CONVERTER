@@ -74,7 +74,15 @@ And Arduino Pro Mini pin-out for reference
 
 ## Level shifter
 
-TODO
+The TH_D7 has an internal Level shifter (Analog Devices ADM3202) which adapts its 3V3 data bus to RS323 for both the GPS and serial control jack interfaces: 
+
+![th-d7_schematic](pictures/TH-D7_sch.jpg)
+
+The easy solution to interface to a non-RS232 PC is to use a RS232 converter such as MAX232.
+
+However in case a RX-only solution is needed there is an easier solution involving less components:
+
+TO BE DONE
 
 ## Resources:
 * https://www.richardmudhar.com/blog/2015/12/gps-serial-receiver-for-kenwood-th-d7/
