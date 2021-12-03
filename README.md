@@ -52,13 +52,25 @@ Rule:
 
 To recalculate the checksum I used this [online NMEA Checksum Calculator](https://nmeachecksum.eqth.net/)
 
-## GPD module description
+## GPS module description
 
-TODO
+For this project I used a cheapo uBlox NEO6M GPS module which can be found in many online stores: 
+![NEO-6M](pictures/NEO-6M-GPS.jpg)
+
+Any general purpose GPS will work provided that it outputs a GPRMS sentence on a UART port.
+If yor GPS sends data at different speed, you'll have to modify the corresponding #define on the code:
+>```#define GPS_SPEED 9600```
+
+Please Note
+1. The module sports a E²PROM memory to store settings after power cycling: I tried to change the bitrate using u-cnter software but for same reason that was not working
+2. ⚠️Ensure the compatibility between of logic level between Arduino and GPS. This is a RX-only application so everything is fine as long as VOH_GPS > VIH_ARDUINO and you use a series resistor between the two (1k should be ok to limit the current)
 
 ## Connection Schematics
+Here's the connection diagram (only essential bypass capacitors are shown)
+![Connection_sch](pictures/schematic.png)
 
-TODO
+And Arduino Pro Mini pin-out for reference
+![Arduino_pinout](pictures/arduino_pinout.png)
 
 ## Level shifter
 
